@@ -4,7 +4,8 @@ import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import { Button } from "antd";
+import { Button, Modal, Divider, Upload } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -19,6 +20,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
+import EnhancedTable_m from "@/components/data-table/UserGroupPopupTable";
+
 function createData(id, name, member, modified_date) {
     return {
         id,
@@ -41,10 +44,10 @@ const rows = [
     createData(1, "Cupcake", 305, "Error"),
     createData(2, "Donut", 452, "In Progress"),
     createData(3, "Eclair", 262, "In Progress"),
-    createData(4, "Frozen yoghurt",232, "Error"),
+    createData(4, "Frozen yoghurt", 232, "Error"),
     createData(5, "Gingerbread", 356, "In Progress"),
     createData(6, "Honeycomb", 408, "In Progress"),
-    createData(7, "Ice cream sandwich",121, "In Progress"),
+    createData(7, "Ice cream sandwich", 121, "In Progress"),
     createData(8, "Jelly Bean", 375, "In Progress"),
     createData(9, "KitKat", 518, "In Progress"),
     createData(10, "Lollipop", 392, "In Progress"),
@@ -257,6 +260,42 @@ export default function EnhancedTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchTerm, setSearchTerm] = useState("");
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const props = {
+        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+        onChange({ file, fileList }) {
+          if (file.status !== "uploading") {
+            console.log(file, fileList);
+            if (file.type !== "text/csv") {
+              message.error("file does not support, please upload .csv file only");
+              return false;
+            }
+          }
+          return true;
+        },
+        showUploadList: {
+          showDownloadIcon: true,
+          downloadIcon: "Download",
+          showRemoveIcon: true,
+        },
+        beforeUpload(file) {
+          if (file.type !== "text/csv") {
+            message.error("file does not support, please upload .csv file only");
+            return false;
+          }
+          return true;
+        },
+      };
+
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");
@@ -377,7 +416,7 @@ export default function EnhancedTable() {
                                                 <>
                                                     <Button
                                                         icon={<EditIcon />}
-                                                        onClick={row.actions.exportAction}
+                                                        onClick={showModal}
                                                         style={{
                                                             fontSize: "16px",
                                                             width: 70,
@@ -431,7 +470,106 @@ export default function EnhancedTable() {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
+                <Modal
+                    title="New Group"
+                    width={800}
+                    centered
+                    open={isModalOpen}
+                    onCancel={handleCancel}
+                    cancelButtonProps={{
+                        style: {
+                            backgroundColor: "#bebebe",
+                            color: "#FFF",
+                            fontSize: "13px",
+                            height: "36px"
+                        }
+                    }}
+                    style={{ width: "600px", height: "400px" }}
+                    cancelText="CANCEL"
+
+                    footer={(_, { CancelBtn }) => (
+                        <>
+                            <CancelBtn
+
+                            />
+                            <Button
+
+                                style={{
+                                    backgroundColor: "rgba(67,190,126,255)",
+                                    color: "#FFF",
+                                    fontSize: "13px",
+                                    height: "36px"
+                                }}
+                            >SAVE</Button>
+                        </>
+                    )}
+                >
+                    <Divider style={{ borderTopColor: "#d5d5d5" }} />
+
+                    <Box
+                        component="form"
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            "& .MuiTextField-root": { m: 1, width: "98%" },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                    >
+                        <TextField
+                            label="Name"
+                            variant="outlined"
+                        />
+                        <div style={{ display: "flex", gap: 2 }}>
+                            <TextField
+                                label="Firstname"
+                                variant="outlined"
+                                sx={{ flex: 1 }}
+                            />
+                            <TextField
+                                label="Lastname"
+                                variant="outlined"
+                                sx={{ flex: 1 }}
+                            />
+                            <TextField
+                                label="Email"
+                                variant="outlined"
+                                sx={{ flex: 1 }}
+                            />
+                        </div>
+                        <div style={{ display: "flex", gap: 10, marginTop: "15px" }}>
+                            <Button
+                                icon={<PlusOutlined />}
+                                style={{
+                                    fontSize: "14px",
+                                    width: 130,
+                                    height: 40,
+                                    backgroundColor: "#ff5252",
+                                    color: "#FFF",
+                                    marginLeft: "7px",
+                                }}
+                            >Add Item</Button>
+
+                            <Upload {...props} >
+                                <Button
+                                    style={{
+                                        fontSize: "14px",
+                                        width: 130,
+                                        height: 40,
+                                        backgroundColor: "#fb8c00",
+                                        color: "#FFF",
+                                    }}
+                                >Import CSV</Button>
+                            </Upload>
+
+                        </div>
+                        <div style={{ marginTop: "10px" }}>
+                            <EnhancedTable_m />
+                        </div>
+                    </Box>
+                </Modal>
             </Paper>
+
 
         </Box>
     );

@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import { Button } from "antd";
+import { Button, Modal, Divider } from "antd";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -41,10 +41,10 @@ const rows = [
     createData(1, "Cupcake", 305, "Error"),
     createData(2, "Donut", 452, "In Progress"),
     createData(3, "Eclair", 262, "In Progress"),
-    createData(4, "Frozen yoghurt",232, "Error"),
+    createData(4, "Frozen yoghurt", 232, "Error"),
     createData(5, "Gingerbread", 356, "In Progress"),
     createData(6, "Honeycomb", 408, "In Progress"),
-    createData(7, "Ice cream sandwich",121, "In Progress"),
+    createData(7, "Ice cream sandwich", 121, "In Progress"),
     createData(8, "Jelly Bean", 375, "In Progress"),
     createData(9, "KitKat", 518, "In Progress"),
     createData(10, "Lollipop", 392, "In Progress"),
@@ -257,6 +257,16 @@ export default function EnhancedTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchTerm, setSearchTerm] = useState("");
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");
@@ -370,7 +380,7 @@ export default function EnhancedTable() {
                                             {row.smtp}
                                         </TableCell>
                                         <TableCell align="left">
-                                            
+
                                             {row.last_modified_date}
                                         </TableCell>
                                         <TableCell align="right">
@@ -378,7 +388,7 @@ export default function EnhancedTable() {
                                                 <>
                                                     <Button
                                                         icon={<EditIcon />}
-                                                        onClick={row.actions.exportAction}
+                                                        onClick={showModal}
                                                         style={{
                                                             fontSize: "16px",
                                                             width: 70,
@@ -432,6 +442,84 @@ export default function EnhancedTable() {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
+                <Modal
+                    title="New Sending Profile"
+                    centered
+                    open={isModalOpen}
+                    onCancel={handleCancel}
+                    cancelButtonProps={{
+                        style: {
+                            backgroundColor: "#bebebe",
+                            color: "#FFF",
+                            fontSize: "13px",
+                            height: "36px"
+                        }
+                    }}
+                    cancelText="CANCEL"
+
+                    footer={(_, { CancelBtn }) => (
+                        <>
+                            <CancelBtn
+
+                            />
+                            <Button
+                                style={{
+                                    backgroundColor: "rgba(67,190,126,255)",
+                                    color: "#FFF",
+                                    fontSize: "13px",
+                                    height: "36px"
+                                }}
+                            >SAVE</Button>
+                        </>
+                    )}
+                >
+                    <Divider style={{ borderTopColor: "#d5d5d5" }} />
+                    <Box
+                        component="form"
+                        sx={{
+                            "& .MuiTextField-root": { m: 1, width: "98%" },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                    >
+                        <div>
+                            <TextField
+                                label="Profile Name"
+                                variant="outlined"
+                            />
+                            <TextField
+                                disabled
+                                label="Interface Type"
+                                variant="outlined"
+                                defaultValue="SMTP"
+                            />
+                            <TextField
+                                label="From"
+                                variant="outlined"
+                                placeholder="First Last <test@example.com>"
+                            />
+                            <TextField
+                                label="Host"
+                                variant="outlined"
+                                placeholder="smtp.example.com:25"
+                            />
+                            <TextField
+                                label="Username"
+                                variant="outlined"
+                            />
+                            <TextField
+                                label="Password"
+                                variant="outlined"
+                                type="password"
+                                autoComplete="current-password"
+                            />
+
+                        </div>
+
+
+                    </Box>
+
+                </Modal>
             </Paper>
 
         </Box>

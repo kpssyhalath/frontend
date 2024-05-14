@@ -19,7 +19,6 @@ import { visuallyHidden } from "@mui/utils";
 import LinearProgress from "@mui/material/LinearProgress";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 function createData(id, name, launch_date, status) {
     return {
         id,
@@ -433,16 +432,6 @@ export default function EnhancedTable() {
                                                             color: "#FFF",
                                                         }}
                                                     />
-                                                    <Button
-                                                        icon={<ContentCopyIcon />}
-                                                        onClick={row.actions.deleteAction}
-                                                        style={{
-                                                            fontSize: "16px",
-                                                            width: 70,
-                                                            height: 40,
-                                                            backgroundColor: "#43bf7d",
-                                                            color: "#FFF",
-                                                        }} />
                                                 </>
                                             )}
                                         </TableCell>

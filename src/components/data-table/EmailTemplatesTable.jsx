@@ -4,7 +4,8 @@ import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import { Button } from "antd";
+import { Button, Modal, Divider } from "antd";
+import Button_m from "@mui/material/Button";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -43,7 +44,7 @@ const rows = [
     createData(4, "Frozen yoghurt", "12-12-2001"),
     createData(5, "Gingerbread", "12-12-2001"),
     createData(6, "Honeycomb", "12-12-2001"),
-    createData(7, "Ice cream sandwich","12-12-2001"),
+    createData(7, "Ice cream sandwich", "12-12-2001"),
     createData(8, "Jelly Bean", "12-12-2001"),
     createData(9, "KitKat", "12-12-2001"),
     createData(10, "Lollipop", "12-12-2001"),
@@ -244,9 +245,20 @@ export default function EnhancedTable() {
     const [order, setOrder] = React.useState("asc");
     const [orderBy, setOrderBy] = React.useState("modified_date");
     const [selected, setSelected] = React.useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeButton, setActiveButton] = useState("");
+    const [inputType, setInputType] = useState("");
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchTerm, setSearchTerm] = useState("");
+
+    const showModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      const handleCancel = () => {
+        setIsModalOpen(false);
+      };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -363,7 +375,7 @@ export default function EnhancedTable() {
                                                 <>
                                                     <Button
                                                         icon={<EditIcon />}
-                                                        onClick={row.actions.exportAction}
+                                                        onClick={showModal}
                                                         style={{
                                                             fontSize: "16px",
                                                             width: 70,
@@ -417,6 +429,110 @@ export default function EnhancedTable() {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
+                <Modal
+                    title="New Template"
+                    width={800}
+                    centered
+                    open={isModalOpen}
+                    onCancel={handleCancel}
+                    cancelButtonProps={{
+                        style: {
+                            backgroundColor: "#bebebe",
+                            color: "#FFF",
+                            fontSize: "13px",
+                            height: "36px"
+                        }
+                    }}
+                    style={{ width: "600px", height: "400px" }}
+                    cancelText="CANCEL"
+
+                    footer={(_, { CancelBtn }) => (
+                        <>
+                            <CancelBtn
+
+                            />
+                            <Button
+
+                                style={{
+                                    backgroundColor: "rgba(67,190,126,255)",
+                                    color: "#FFF",
+                                    fontSize: "13px",
+                                    height: "36px"
+                                }}
+                            >SAVE</Button>
+                        </>
+                    )}
+                >
+                    <Divider style={{ borderTopColor: "#d5d5d5" }} />
+
+                    <Box
+                        component="form"
+                        sx={{
+                            "& .MuiTextField-root": { m: 1, width: "100%" },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                    >
+                        <div>
+                            <TextField
+                                label="Template Name"
+                                variant="outlined"
+                            />
+                            <TextField
+                                label="Subject"
+                                variant="outlined"
+                            />
+                        </div>
+                        <div style={{ marginTop: "40px", marginLeft: "7px", gap: 12 }}>
+                            <Button_m variant="text" size="large"
+                                style={{
+                                    borderRadius: activeButton === "text" ? "0px" : "4px",
+                                    borderBottom: activeButton === "text" ? "solid" : "none",
+                                }}
+                                onClick={() => handleInputType("text")}
+                            >Text</Button_m>
+                            <Button_m variant="text" size="large"
+                                style={{
+                                    borderRadius: activeButton === "html" ? "0px" : "4px",
+                                    borderBottom: activeButton === "html" ? "solid" : "none",
+                                }}
+                                onClick={() => handleInputType("html")}
+                            >HTML</Button_m>
+                        </div>
+                        {inputType === "text" && (
+                            <TextField
+                                style={{
+                                    minWidth: 500
+                                }}
+                                label="Plaintext"
+                                multiline={true}
+                                rows="15"
+                                rowsMax="20"
+                                variant="outlined"
+                                fullWidth={true}
+                            />
+                        )}
+                        {inputType === "html" && (
+                            <div style={{ marginTop: "10px" }}>
+                                <JoditEditor
+                                    ref={editor}
+                                    config={{
+                                        height: 400,
+                                        toolbarAdaptive: false,
+                                        toolbarButtonSize: "small",
+                                        toolbar: true,
+                                        showCharsCounter: false,
+                                        buttons: "bold,italic,underline,strikethrough,|,align,ul,ol,|,font,fontsize,brush,paragraph",
+                                        placeholder: "",
+                                    }}
+                                />
+                            </div>
+                        )}
+
+                    </Box>
+
+
+                </Modal>
             </Paper>
 
         </Box>
