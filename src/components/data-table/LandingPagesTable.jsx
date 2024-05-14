@@ -256,16 +256,16 @@ export default function EnhancedTable() {
 
     const showModal = () => {
         setIsModalOpen(true);
-      };
-    
-      const handleCancel = () => {
-        setIsModalOpen(false);
-      };
+    };
 
-      const handleInputType = (type) => {
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleInputType = (type) => {
         setInputType(type);
         setActiveButton(type);
-      };
+    };
 
 
     const handleRequestSort = (event, property) => {
