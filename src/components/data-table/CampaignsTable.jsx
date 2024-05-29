@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
@@ -20,6 +20,8 @@ import { visuallyHidden } from "@mui/utils";
 import LinearProgress from "@mui/material/LinearProgress";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+
 
 function createData(id, name, launch_date, status) {
     return {
@@ -89,10 +91,10 @@ const rows = [
     createData(1, "Cupcake", 305, "Error"),
     createData(2, "Donut", 452, "In Progress"),
     createData(3, "Eclair", 262, "In Progress"),
-    createData(4, "Frozen yoghurt",232, "Error"),
+    createData(4, "Frozen yoghurt", 232, "Error"),
     createData(5, "Gingerbread", 356, "In Progress"),
     createData(6, "Honeycomb", 408, "In Progress"),
-    createData(7, "Ice cream sandwich",121, "In Progress"),
+    createData(7, "Ice cream sandwich", 121, "In Progress"),
     createData(8, "Jelly Bean", 375, "In Progress"),
     createData(9, "KitKat", 518, "In Progress"),
     createData(10, "Lollipop", 392, "In Progress"),
@@ -304,6 +306,23 @@ export default function EnhancedTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchTerm, setSearchTerm] = useState("");
+    const navigate = useNavigate();
+    const [setModalOpen, setIsModalOpen1] = useState(false);
+
+
+    const showModal1 = () => {
+        setIsModalOpen1(true);
+    };
+    const Cancel = () => {
+        setIsModalOpen1(false);
+    };
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        navigate("/campaigns/id");
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -425,7 +444,7 @@ export default function EnhancedTable() {
                                                 <>
                                                     <Button
                                                         icon={<GridViewRoundedIcon />}
-                                                        onClick={row.actions.exportAction}
+                                                        onClick={handleSubmit}
                                                         style={{
                                                             fontSize: "16px",
                                                             width: 70,
@@ -436,7 +455,7 @@ export default function EnhancedTable() {
                                                     />
                                                     <Button
                                                         icon={<DeleteRoundedIcon />}
-                                                        onClick={row.actions.deleteAction}
+                                                        onClick={showModal1}
                                                         style={{
                                                             fontSize: "16px",
                                                             width: 70,
@@ -479,6 +498,39 @@ export default function EnhancedTable() {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
+                <Modal
+                    title="Delete Item"
+                    centered
+                    open={setModalOpen}
+                    onCancel={Cancel}
+                    cancelButtonProps={{
+                        style: {
+                            backgroundColor: "#ff5252",
+                            color: "#FFF",
+                            fontSize: "13px",
+                            height: "36px",
+                        }
+                    }}
+                    cancelText="CANCEL"
+                    footer={(_, { CancelBtn }) => (
+                        <>
+                            <CancelBtn
+                            />
+                            <Button
+                                style={{
+                                    borderColor: "rgba(67,190,126,255)",
+                                    color: "rgba(67,190,126,255)",
+                                    fontSize: "13px",
+                                    height: "36px",
+                                }}
+                            >OK</Button>
+                        </>
+                    )}
+                >
+                    <Typography>
+                        Are you sure you want to delete this item?
+                    </Typography>
+                </Modal>
             </Paper>
 
         </Box>
