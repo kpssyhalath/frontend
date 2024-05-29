@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -53,8 +53,8 @@ function getColorForRow(row, columnId) {
 }
 
 const rows = [
-  createData(1, "Cupcake", 305, 3.7, 67, 4.3,2),
-  createData(2, "Donut", 452, 25.0, 51, 4.9,2),
+  createData(1, "Cupcake", 305, 3.7, 67, 4.3, 2),
+  createData(2, "Donut", 452, 25.0, 51, 4.9, 2),
   createData(3, "Eclair", 262, 16.0, 24, 6.0),
   createData(4, "Frozen yoghurt", 159, 6.0, 24, 4.0),
   createData(5, "Gingerbread", 356, 16.0, 49, 3.9),
@@ -207,11 +207,11 @@ function EnhancedTableToolbar({ rowsPerPage, onRowsPerPageChange, onSearch }) {
     value = value > 0 ? value : 1;
     onRowsPerPageChange(value);
   };
-  
+
   const handleSearchChange = (event) => {
     const { value } = event.target;
     setSearchTerm(value);
-    onSearch(value); 
+    onSearch(value);
   };
 
   return (
@@ -221,65 +221,65 @@ function EnhancedTableToolbar({ rowsPerPage, onRowsPerPageChange, onSearch }) {
         pr: { xs: 1, sm: 1 },
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between", 
+        justifyContent: "space-between",
       }}
     >
-      
+
       <Typography
         sx={{
-        fontSize: "15px",
-        marginRight: "8px"
+          fontSize: "15px",
+          marginRight: "8px"
         }}
         id="tableTitle"
         component="div"
       >
         Show
       </Typography>
-      <TextField 
-      type="number" 
-      size="small" 
-      style = {{width: 70}}
-      value={rowsPerPage}
-      onChange={handleRowsPerPageChange}
+      <TextField
+        type="number"
+        size="small"
+        style={{ width: 70 }}
+        value={rowsPerPage}
+        onChange={handleRowsPerPageChange}
       />
       <Typography
         sx={{
-        fontSize: "15px",
-        marginLeft: "5px"
+          fontSize: "15px",
+          marginLeft: "5px"
         }}
         id="tableTitle"
         component="div"
       >
         Columns
+      </Typography>
+      <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+        <Typography
+          sx={{
+            fontSize: "15px",
+            marginRight: "5px"
+          }}
+          id="tableTitle"
+          component="div"
+        >
+          Search:
         </Typography>
-        <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
-      <Typography
-        sx={{
-        fontSize: "15px",
-        marginRight: "5px"
-        }}
-        id="tableTitle"
-        component="div"
-      >
-        Search:
-        </Typography>
-      
-      
+
+
         <TextField
-        size="small" 
-        style = {{width: 470}}
-        value={searchTerm}
-        onChange={handleSearchChange}
-        InputProps={{
-          endAdornment: (
-            <SearchIcon style={{ marginRight: "8px", color: "gray" }} />
-          ),
-        }}
+          size="small"
+          style={{ width: 470 }}
+          value={searchTerm}
+          onChange={handleSearchChange}
+          InputProps={{
+            endAdornment: (
+              <SearchIcon style={{ marginRight: "8px", color: "gray" }} />
+            ),
+          }}
         />
 
       </div>
-      
-     
+
+
     </Toolbar>
   );
 }
@@ -292,6 +292,16 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [searchTerm, setSearchTerm] = useState("");
+  const [setModalOpen, setIsModalOpen1] = useState(false);
+
+
+  const showModal1 = () => {
+      setIsModalOpen1(true);
+  };
+  const Cancel = () => {
+      setIsModalOpen1(false);
+  };
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -433,6 +443,7 @@ export default function EnhancedTable() {
                           />
                           <Button
                             icon={<DeleteRoundedIcon />}
+                            onClick={showModal1}
                             style={{
                               fontSize: "16px",
                               width: 70,
@@ -453,7 +464,8 @@ export default function EnhancedTable() {
                     <LinearProgress style={{ position: "absolute", top: 0, left: 0, right: 0 }} />
                     <Typography align="center" sx={{
                       fontSize: "14px",
-                      color: "#c9c9c9",}}>
+                      color: "#c9c9c9",
+                    }}>
                       This might take a while to complete
                     </Typography>
                   </TableCell>
@@ -474,6 +486,39 @@ export default function EnhancedTable() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+        <Modal
+          title="Delete Item"
+          centered
+          open={setModalOpen}
+          onCancel={Cancel}
+          cancelButtonProps={{
+            style: {
+              backgroundColor: "#ff5252",
+              color: "#FFF",
+              fontSize: "13px",
+              height: "36px",
+            }
+          }}
+          cancelText="CANCEL"
+          footer={(_, { CancelBtn }) => (
+            <>
+              <CancelBtn
+              />
+              <Button
+                style={{
+                  borderColor: "rgba(67,190,126,255)",
+                  color: "rgba(67,190,126,255)",
+                  fontSize: "13px",
+                  height: "36px",
+                }}
+              >OK</Button>
+            </>
+          )}
+        >
+          <Typography>
+            Are you sure you want to delete this item?
+          </Typography>
+        </Modal>
       </Paper>
 
     </Box>

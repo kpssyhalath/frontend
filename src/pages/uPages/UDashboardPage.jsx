@@ -1,4 +1,4 @@
-import UDashboardLayout from "@/layouts/UDashboardLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
 import { Typography, Card, Divider } from "antd";
 import Ulinecharts from "@/components/charts/line-charts/Ulinecharts";
 import Udonutcharts from "@/components/charts/donut-charts/Udonutcharts";
@@ -6,7 +6,7 @@ import EnhancedTable from "@/components/data-table/uDashboardTable";
 
 export default function UDashboardPage() {
   return (
-    <UDashboardLayout>
+    <DashboardLayout>
       <>
       <Card
         title={<Typography.Title level={1}>Dashboard
@@ -34,6 +34,6 @@ export default function UDashboardPage() {
             </div>    
       </Card>
     </>
-    </UDashboardLayout>
+    </DashboardLayout>
   );
 }

@@ -17,10 +17,90 @@ import PersonIcon from "@mui/icons-material/Person";
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "@/assets/Logo/Cyberus_hor.png";
 
+import { jwtDecode } from "jwt-decode";
+import useAuth from "../hooks/useAuth";
+import { useContext } from "react";
+import AuthContext from "../context/authProvider";
+
 const { Header, Sider, Content } = Layout;
+
+const AdminRole = () => {
+  return [
+    {
+      key: "/dashboard",
+      icon: <DashboardOutlined />,
+      label: <NavLink to="/dashboard">Dashboard</NavLink>,
+    },
+    {
+      key: "/campaigns",
+      icon: <BulbOutlined />,
+      label: <NavLink to="/campaigns">Campaigns</NavLink>,
+    },
+    {
+      key: "/user-and-group",
+      icon: <UsergroupAddOutlined />,
+      label: <NavLink to="/user-and-group">User & Group</NavLink>,
+    },
+    {
+      key: "/email-templates",
+      icon: <MailOutlined />,
+      label: <NavLink to="/email-templates">Email Templates</NavLink>,
+    },
+    {
+      key: "/landing-pages",
+      icon: <LaptopOutlined />,
+      label: <NavLink to="/landing-pages">Landing Pages</NavLink>,
+    },
+    {
+      key: "/sending-profiles",
+      icon: <SendOutlined />,
+      label: <NavLink to="/sending-profiles">Sending Profiles</NavLink>,
+    },
+    {
+      key: "/user-management",
+      icon: <SettingOutlined />,
+      label: <NavLink to="/user-management">User Management</NavLink>,
+    },
+  ]
+}
+
+const UserRole = () => {
+  return [
+    {
+      key: "/dashboard",
+      icon: <DashboardOutlined />,
+      label: <NavLink to="/dashboard">Dashboard</NavLink>,
+    },
+    {
+      key: "/campaigns",
+      icon: <BulbOutlined />,
+      label: <NavLink to="/campaigns">Campaigns</NavLink>,
+    },
+  ]
+}
 
 export default function DashboardLayout({ children }) {
   const navigate = useNavigate();
+
+  const { auth } = useAuth();
+
+  const accessToken = auth?.access_token || "";
+  const decodedToken = accessToken ? jwtDecode(accessToken) : null;
+  // const navigate = useNavigate();
+  const { setAuth } = useContext(AuthContext);
+
+  const [isAdmin, setIsAdmin] = useState(true)
+
+  const logout = async () => {
+
+  
+    localStorage.clear() // Clear the token from local storage
+    setAuth({});
+    navigate("/");
+    location.reload();
+  }
+  
+
 
   const handleProfileAllClick = () => {
     navigate('/user-management');
@@ -29,6 +109,7 @@ export default function DashboardLayout({ children }) {
   const handleLogoutClick = () => {
     navigate('/login');
   };
+  
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -73,43 +154,7 @@ export default function DashboardLayout({ children }) {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={[pathname]}
-          items={[
-            {
-              key: "/dashboard",
-              icon: <DashboardOutlined />,
-              label: <NavLink to="/dashboard">Dashboard</NavLink>,
-            },
-            {
-              key: "/campaigns",
-              icon: <BulbOutlined />,
-              label: <NavLink to="/campaigns">Campaigns</NavLink>,
-            },
-            {
-              key: "/user-and-group",
-              icon: <UsergroupAddOutlined />,
-              label: <NavLink to="/user-and-group">User & Group</NavLink>,
-            },
-            {
-              key: "/email-templates",
-              icon: <MailOutlined />,
-              label: <NavLink to="/email-templates">Email Templates</NavLink>,
-            },
-            {
-              key: "/landing-pages",
-              icon: <LaptopOutlined />,
-              label: <NavLink to="/landing-pages">Landing Pages</NavLink>,
-            },
-            {
-              key: "/sending-profiles",
-              icon: <SendOutlined />,
-              label: <NavLink to="/sending-profiles">Sending Profiles</NavLink>,
-            },
-            {
-              key: "/user-management",
-              icon: <SettingOutlined />,
-              label: <NavLink to="/user-management">User Management</NavLink>,
-            },
-          ]}
+          items={isAdmin ? AdminRole() : UserRole()}
         />
       </Sider>
       <Layout>

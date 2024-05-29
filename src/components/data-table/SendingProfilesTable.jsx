@@ -258,6 +258,16 @@ export default function EnhancedTable() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [setModalOpen, setIsModalOpen1] = useState(false);
+
+
+    const showModal1 = () => {
+        setIsModalOpen1(true);
+    };
+    const Cancel = () => {
+        setIsModalOpen1(false);
+    };
+
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -399,7 +409,7 @@ export default function EnhancedTable() {
                                                     />
                                                     <Button
                                                         icon={<DeleteRoundedIcon />}
-                                                        onClick={row.actions.deleteAction}
+                                                        onClick={showModal1}
                                                         style={{
                                                             fontSize: "16px",
                                                             width: 70,
@@ -519,6 +529,39 @@ export default function EnhancedTable() {
 
                     </Box>
 
+                </Modal>
+                <Modal
+                    title="Delete Item"
+                    centered
+                    open={setModalOpen}
+                    onCancel={Cancel}
+                    cancelButtonProps={{
+                        style: {
+                            backgroundColor: "#ff5252",
+                            color: "#FFF",
+                            fontSize: "13px",
+                            height: "36px",
+                        }
+                    }}
+                    cancelText="CANCEL"
+                    footer={(_, { CancelBtn }) => (
+                        <>
+                            <CancelBtn
+                            />
+                            <Button
+                                style={{
+                                    borderColor: "rgba(67,190,126,255)",
+                                    color: "rgba(67,190,126,255)",
+                                    fontSize: "13px",
+                                    height: "36px",
+                                }}
+                            >OK</Button>
+                        </>
+                    )}
+                >
+                    <Typography>
+                        Are you sure you want to delete this item?
+                    </Typography>
                 </Modal>
             </Paper>
 

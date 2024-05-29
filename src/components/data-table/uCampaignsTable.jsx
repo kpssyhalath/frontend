@@ -19,6 +19,8 @@ import { visuallyHidden } from "@mui/utils";
 import LinearProgress from "@mui/material/LinearProgress";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+
 function createData(id, name, launch_date, status) {
     return {
         id,
@@ -302,6 +304,13 @@ export default function EnhancedTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchTerm, setSearchTerm] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+
+      navigate("/u/campaigns/id");
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -423,7 +432,7 @@ export default function EnhancedTable() {
                                                 <>
                                                     <Button
                                                         icon={<GridViewRoundedIcon />}
-                                                        onClick={row.actions.exportAction}
+                                                        onClick={handleSubmit}
                                                         style={{
                                                             fontSize: "16px",
                                                             width: 70,

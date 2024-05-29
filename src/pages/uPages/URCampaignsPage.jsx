@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UDashboardLayout from "@/layouts/UDashboardLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
 import { Divider, Button, Modal, Card, Typography } from "antd";
 import Linecharts from "@/components/charts/line-charts/Linecharts";
@@ -45,7 +45,7 @@ export default function URCampaignsPage() {
   return (
 
     <>
-      <UDashboardLayout>
+      <DashboardLayout>
         <Card
           title={<Typography.Title level={1}>Results of Campaign
             <Divider />
@@ -174,7 +174,7 @@ export default function URCampaignsPage() {
             Are you sure you want to delete this item?
           </Typography>
         </Modal>
-      </UDashboardLayout>
+      </DashboardLayout>
     </>
   );
 }

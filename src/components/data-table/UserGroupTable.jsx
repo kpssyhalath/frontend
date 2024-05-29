@@ -261,6 +261,16 @@ export default function EnhancedTable() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [setModalOpen, setIsModalOpen1] = useState(false);
+
+
+    const showModal1 = () => {
+        setIsModalOpen1(true);
+    };
+    const Cancel = () => {
+        setIsModalOpen1(false);
+    };
+
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -273,28 +283,28 @@ export default function EnhancedTable() {
     const props = {
         action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
         onChange({ file, fileList }) {
-          if (file.status !== "uploading") {
-            console.log(file, fileList);
-            if (file.type !== "text/csv") {
-              message.error("file does not support, please upload .csv file only");
-              return false;
+            if (file.status !== "uploading") {
+                console.log(file, fileList);
+                if (file.type !== "text/csv") {
+                    message.error("file does not support, please upload .csv file only");
+                    return false;
+                }
             }
-          }
-          return true;
+            return true;
         },
         showUploadList: {
-          showDownloadIcon: true,
-          downloadIcon: "Download",
-          showRemoveIcon: true,
+            showDownloadIcon: true,
+            downloadIcon: "Download",
+            showRemoveIcon: true,
         },
         beforeUpload(file) {
-          if (file.type !== "text/csv") {
-            message.error("file does not support, please upload .csv file only");
-            return false;
-          }
-          return true;
+            if (file.type !== "text/csv") {
+                message.error("file does not support, please upload .csv file only");
+                return false;
+            }
+            return true;
         },
-      };
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -427,7 +437,7 @@ export default function EnhancedTable() {
                                                     />
                                                     <Button
                                                         icon={<DeleteRoundedIcon />}
-                                                        onClick={row.actions.deleteAction}
+                                                        onClick={showModal1}
                                                         style={{
                                                             fontSize: "16px",
                                                             width: 70,
@@ -567,6 +577,39 @@ export default function EnhancedTable() {
                             <EnhancedTable_m />
                         </div>
                     </Box>
+                </Modal>
+                <Modal
+                    title="Delete Item"
+                    centered
+                    open={setModalOpen}
+                    onCancel={Cancel}
+                    cancelButtonProps={{
+                        style: {
+                            backgroundColor: "#ff5252",
+                            color: "#FFF",
+                            fontSize: "13px",
+                            height: "36px",
+                        }
+                    }}
+                    cancelText="CANCEL"
+                    footer={(_, { CancelBtn }) => (
+                        <>
+                            <CancelBtn
+                            />
+                            <Button
+                                style={{
+                                    borderColor: "rgba(67,190,126,255)",
+                                    color: "rgba(67,190,126,255)",
+                                    fontSize: "13px",
+                                    height: "36px",
+                                }}
+                            >OK</Button>
+                        </>
+                    )}
+                >
+                    <Typography>
+                        Are you sure you want to delete this item?
+                    </Typography>
                 </Modal>
             </Paper>
 

@@ -250,6 +250,16 @@ export default function EnhancedTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchTerm, setSearchTerm] = useState("");
     const [isModalOpen, setisModalOpen] = useState(false);
+    const [setModalOpen, setIsModalOpen1] = useState(false);
+
+
+    const showModal1 = () => {
+        setIsModalOpen1(true);
+    };
+    const Cancel = () => {
+        setIsModalOpen1(false);
+    };
+
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -397,7 +407,9 @@ export default function EnhancedTable() {
                                                     />
                                                     <Button
                                                         icon={<DeleteRoundedIcon />}
+                                                        onClick={showModal1}
                                                         style={{
+                                                            
                                                             fontSize: "16px",
                                                             width: 70,
                                                             height: 40,
@@ -458,7 +470,7 @@ export default function EnhancedTable() {
 
                     footer={(_, { CancelBtn }) => (
                         <>
-                            <CancelBtn/>
+                            <CancelBtn />
                             <Button
 
                                 style={{
@@ -471,43 +483,76 @@ export default function EnhancedTable() {
                         </>
                     )}
                 >
-                <Divider style={{borderTopColor: "#d5d5d5"}}/>
-                <Box
-          component="form"
-          sx={{
-            "& .MuiTextField-root": { m: 1, width: "100%" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-            <div>
-              <TextField
-                label="Username"
-                variant="outlined"
-              />
-              <TextField
-              label="Old Password"
-              variant="outlined"
-              type="password"
-              autoComplete="current-password"
-            />
-            <TextField
-              label="New Password"
-              variant="outlined"
-              type="password"
-              autoComplete="current-password"
-            />
-            <TextField
-              label="Confirm Password"
-              variant="outlined"
-              type="password"
-              autoComplete="current-password"
-            />
-            </div>
+                    <Divider style={{ borderTopColor: "#d5d5d5" }} />
+                    <Box
+                        component="form"
+                        sx={{
+                            "& .MuiTextField-root": { m: 1, width: "100%" },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                    >
+                        <div>
+                            <TextField
+                                label="Username"
+                                variant="outlined"
+                            />
+                            <TextField
+                                label="Old Password"
+                                variant="outlined"
+                                type="password"
+                                autoComplete="current-password"
+                            />
+                            <TextField
+                                label="New Password"
+                                variant="outlined"
+                                type="password"
+                                autoComplete="current-password"
+                            />
+                            <TextField
+                                label="Confirm Password"
+                                variant="outlined"
+                                type="password"
+                                autoComplete="current-password"
+                            />
+                        </div>
 
 
 
-        </Box>
+                    </Box>
+                </Modal>
+                <Modal
+                    title="Delete Item"
+                    centered
+                    open={setModalOpen}
+                    onCancel={Cancel}
+                    cancelButtonProps={{
+                        style: {
+                            backgroundColor: "#ff5252",
+                            color: "#FFF",
+                            fontSize: "13px",
+                            height: "36px",
+                        }
+                    }}
+                    cancelText="CANCEL"
+                    footer={(_, { CancelBtn }) => (
+                        <>
+                            <CancelBtn
+                            />
+                            <Button
+                                style={{
+                                    borderColor: "rgba(67,190,126,255)",
+                                    color: "rgba(67,190,126,255)",
+                                    fontSize: "13px",
+                                    height: "36px",
+                                }}
+                            >OK</Button>
+                        </>
+                    )}
+                >
+                    <Typography>
+                        Are you sure you want to delete this item?
+                    </Typography>
                 </Modal>
             </Paper>
 

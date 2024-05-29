@@ -1,4 +1,4 @@
-import UDashboardLayout from "@/layouts/UDashboardLayout";
+import DashboardLayout from "@/layouts/DashboardLayout";
 import React from "react";
 import { Typography, Card, Divider } from "antd";
 
@@ -7,7 +7,7 @@ import EnhancedTable from "@/components/data-table/uCampaignsTable"
 export default function UCampaignsPage() {
 
   return (
-    <UDashboardLayout>
+    <DashboardLayout>
     <>
       <Card
         title={<Typography.Title level={1}>
@@ -27,6 +27,6 @@ export default function UCampaignsPage() {
 
       </Card>
     </>
-    </UDashboardLayout>
+    </DashboardLayout>
   )
 }
