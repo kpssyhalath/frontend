@@ -35,7 +35,6 @@ export default function CampaignsPage() {
     setIsModalOpen(false);
   };
 
-
   const showNameError = nameTouched && name.length === 0;
   const showEmailTemplateError = emailTemplateTouched && !emailTemplate;
   const showLandingPageError = landingPageTouched && !landingPage;
@@ -52,15 +51,17 @@ export default function CampaignsPage() {
     <DashboardLayout>
       <>
         <Card
-          title={<Typography.Title level={1}>
-            Campaigns
-            <Divider />
-          </Typography.Title>}
+          title={
+            <Typography.Title level={1}>
+              Campaigns
+              <Divider />
+            </Typography.Title>
+          }
           bordered={false}
           style={{
             width: "100%",
             borderBottom: "0 2px solid rgba(0, 0, 0, 0.1)",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)"
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
           }}
         >
           <Button
@@ -74,15 +75,15 @@ export default function CampaignsPage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              bottom: "25px"
+              bottom: "25px",
             }}
             onClick={showModal}
-          >New Campaign</Button>
+          >
+            New Campaign
+          </Button>
           <div style={{ marginTop: "10px" }}>
             <EnhancedTable />
-
           </div>
-
         </Card>
         <Modal
           title="New Campaign"
@@ -94,25 +95,26 @@ export default function CampaignsPage() {
               backgroundColor: "#bebebe",
               color: "#FFF",
               fontSize: "13px",
-              height: "36px"
-            }
+              height: "36px",
+            },
           }}
           cancelText="CANCEL"
-
           footer={(_, { CancelBtn }) => (
             <>
-              <CancelBtn
-
-              />
+              <CancelBtn />
               <Button
-                icon={<RocketLaunchIcon style={{ width: "14px", height: "14px" }} />}
+                icon={
+                  <RocketLaunchIcon style={{ width: "14px", height: "14px" }} />
+                }
                 style={{
                   backgroundColor: "rgba(67,190,126,255)",
                   color: "#FFF",
                   fontSize: "13px",
-                  height: "36px"
+                  height: "36px",
                 }}
-              >LAUNCH</Button>
+              >
+                LAUNCH
+              </Button>
             </>
           )}
         >
@@ -133,7 +135,6 @@ export default function CampaignsPage() {
                 variant="outlined"
                 onBlur={() => setNameTouched(true)}
                 onChange={(e) => setName(e.target.value)}
-
               />
               <TextField
                 select
@@ -200,10 +201,16 @@ export default function CampaignsPage() {
                     value={endDate}
                     error={showNameError}
                     renderInput={(params) => (
-                      <Box {...params} sx={{ color: showNameError ? "red" : "inherit" }} />
+                      <Box
+                        {...params}
+                        sx={{ color: showNameError ? "red" : "inherit" }}
+                      />
                     )}
                     renderDay={(day, _value, DayComponentProps) => (
-                      <Box {...DayComponentProps} sx={{ color: showNameError ? "red" : "inherit" }} />
+                      <Box
+                        {...DayComponentProps}
+                        sx={{ color: showNameError ? "red" : "inherit" }}
+                      />
                     )}
                     inputFormat="MM/DD/YYYY"
                     fullWidth
@@ -213,7 +220,9 @@ export default function CampaignsPage() {
               <TextField
                 select
                 error={showSendingProfileError}
-                helperText={showSendingProfileError ? "Options is Required" : ""}
+                helperText={
+                  showSendingProfileError ? "Options is Required" : ""
+                }
                 label="Sending Profile"
                 variant="outlined"
                 onBlur={() => setSendingProfileTouched(true)}
@@ -248,14 +257,9 @@ export default function CampaignsPage() {
                   <MenuItem disabled>No data available</MenuItem>
                 )}
               </TextField>
-
-
             </div>
           </Box>
-
-
         </Modal>
-
       </>
     </DashboardLayout>
   );

@@ -3,7 +3,7 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
 import { Divider, Button, Modal, Card, Typography } from "antd";
 import Linecharts from "@/components/charts/line-charts/Linecharts";
-import EnhancedTable from "@/components/data-table/RcampaingsTable"
+import EnhancedTable from "@/components/data-table/RcampaingsTable";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,6 +12,7 @@ import EmailSentDonut from "@/components/charts/donut-charts/emailSentDonut";
 import EmailOpenDonut from "@/components/charts/donut-charts/emailOpenDonut";
 import ClickedLinkDonut from "@/components/charts/donut-charts/ClickedLinkDonut";
 import SummittedDataDonut from "@/components/charts/donut-charts/SummittedDataDonut";
+import PublicLayout from "../../layouts/PublicLayout";
 
 export default function URCampaignsPage() {
   const [refreshing, setRefreshing] = useState(false);
@@ -19,7 +20,7 @@ export default function URCampaignsPage() {
   const navigate = useNavigate();
 
   const handlecampaignsClick = () => {
-    navigate('/u/campaigns');
+    navigate("/u/campaigns");
   };
 
   const emailsent = 30;
@@ -43,23 +44,23 @@ export default function URCampaignsPage() {
   };
 
   return (
-
     <>
-      <DashboardLayout>
+      <PublicLayout>
         <Card
-          title={<Typography.Title level={1}>Results of Campaign
-            <Divider />
-          </Typography.Title>}
+          title={
+            <Typography.Title level={1}>
+              Results of Campaign
+              <Divider />
+            </Typography.Title>
+          }
           bordered={false}
-          style=
-          {{
-            width: '100%',
-            borderBottom: '0 2px solid rgba(0, 0, 0, 0.1)',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+          style={{
+            width: "100%",
+            borderBottom: "0 2px solid rgba(0, 0, 0, 0.1)",
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
           }}
-
         >
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: "flex", gap: "10px" }}>
             <Button
               icon={<ArrowBackIcon fontSize="small" />}
               style={{
@@ -73,7 +74,8 @@ export default function URCampaignsPage() {
                 justifyContent: "center",
               }}
               onClick={handlecampaignsClick}
-            >BACK
+            >
+              BACK
             </Button>
             <Button
               icon={<AssessmentIcon fontSize="small" />}
@@ -87,7 +89,8 @@ export default function URCampaignsPage() {
                 alignItems: "center",
                 justifyContent: "center",
               }}
-            >Export As CSV
+            >
+              Export As CSV
             </Button>
             <Button
               icon={<DeleteIcon fontSize="small" />}
@@ -102,7 +105,8 @@ export default function URCampaignsPage() {
                 justifyContent: "center",
               }}
               onClick={showModal}
-            >Delete
+            >
+              Delete
             </Button>
             <Button
               icon={<AutorenewIcon fontSize="small" />}
@@ -118,26 +122,28 @@ export default function URCampaignsPage() {
               }}
               loading={refreshing}
               onClick={handleRefresh}
-            >Refresh
+            >
+              Refresh
             </Button>
           </div>
           <Divider />
-          <Typography.Title level={1}>Sales Branch
+          <Typography.Title level={1}>
+            Sales Branch
             <Divider />
           </Typography.Title>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Linecharts />
           </div>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: "flex" }}>
             <EmailSentDonut emailsent={emailsent} />
             <EmailOpenDonut emailopened={emailopened} />
             <ClickedLinkDonut clickedlink={clickedlink} />
             <SummittedDataDonut summitdata={summitdata} />
           </div>
-          <div style={{ paddingTop: '10px', paddingBottom: '30px' }}>
+          <div style={{ paddingTop: "10px", paddingBottom: "30px" }}>
             <Typography.Title level={1}>Details</Typography.Title>
           </div>
-          <div style={{ marginTop: '10px' }}>
+          <div style={{ marginTop: "10px" }}>
             <EnhancedTable />
           </div>
         </Card>
@@ -152,13 +158,12 @@ export default function URCampaignsPage() {
               color: "#FFF",
               fontSize: "13px",
               height: "36px",
-            }
+            },
           }}
           cancelText="CANCEL"
           footer={(_, { CancelBtn }) => (
             <>
-              <CancelBtn
-              />
+              <CancelBtn />
               <Button
                 style={{
                   borderColor: "rgba(67,190,126,255)",
@@ -166,17 +171,15 @@ export default function URCampaignsPage() {
                   fontSize: "13px",
                   height: "36px",
                 }}
-              >OK</Button>
+              >
+                OK
+              </Button>
             </>
           )}
         >
-          <Typography>
-            Are you sure you want to delete this item?
-          </Typography>
+          <Typography>Are you sure you want to delete this item?</Typography>
         </Modal>
-      </DashboardLayout>
+      </PublicLayout>
     </>
   );
 }
-
-

@@ -7,7 +7,6 @@ import Box from "@mui/material/Box";
 import EnhancedTable from "@/components/data-table/SendingProfilesTable";
 
 export default function SendingProfilesPage() {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -22,16 +21,17 @@ export default function SendingProfilesPage() {
     <DashboardLayout>
       <>
         <Card
-          title={<Typography.Title level={1}>
-            Sending Profiles
-            <Divider />
-          </Typography.Title>}
+          title={
+            <Typography.Title level={1}>
+              Sending Profiles
+              <Divider />
+            </Typography.Title>
+          }
           bordered={false}
           style={{
             width: "100%",
             borderBottom: "0 2px solid rgba(0, 0, 0, 0.1)",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)"
-
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
           }}
         >
           <Button
@@ -45,16 +45,15 @@ export default function SendingProfilesPage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              bottom: "25px"
+              bottom: "25px",
             }}
             onClick={showModal}
-          >New Profile</Button>
+          >
+            New Profile
+          </Button>
           <div style={{ marginTop: "10px" }}>
             <EnhancedTable />
-
           </div>
-
-
         </Card>
         <Modal
           title="New Sending Profile"
@@ -66,24 +65,23 @@ export default function SendingProfilesPage() {
               backgroundColor: "#bebebe",
               color: "#FFF",
               fontSize: "13px",
-              height: "36px"
-            }
+              height: "36px",
+            },
           }}
           cancelText="CANCEL"
-
           footer={(_, { CancelBtn }) => (
             <>
-              <CancelBtn
-
-              />
+              <CancelBtn />
               <Button
                 style={{
                   backgroundColor: "rgba(67,190,126,255)",
                   color: "#FFF",
                   fontSize: "13px",
-                  height: "36px"
+                  height: "36px",
                 }}
-              >SAVE</Button>
+              >
+                SAVE
+              </Button>
             </>
           )}
         >
@@ -97,10 +95,7 @@ export default function SendingProfilesPage() {
             autoComplete="off"
           >
             <div>
-              <TextField
-                label="Profile Name"
-                variant="outlined"
-              />
+              <TextField label="Profile Name" variant="outlined" />
               <TextField
                 disabled
                 label="Interface Type"
@@ -117,24 +112,16 @@ export default function SendingProfilesPage() {
                 variant="outlined"
                 placeholder="smtp.example.com:25"
               />
-              <TextField
-                label="Username"
-                variant="outlined"
-              />
+              <TextField label="Username" variant="outlined" />
               <TextField
                 label="Password"
                 variant="outlined"
                 type="password"
                 autoComplete="current-password"
               />
-
             </div>
-
-
           </Box>
-
         </Modal>
-
       </>
     </DashboardLayout>
   );

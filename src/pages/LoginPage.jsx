@@ -5,53 +5,43 @@ import TextField from "@mui/material/TextField";
 import Logo from "@/assets/Logo/cyberus-ver.png";
 import { useNavigate } from "react-router-dom";
 
-//axios
-import axios from 'axios'
+import { supabase } from "../../utils/supabase/client";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5555/auth/login', {
-        email: email,
-        password: password
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        
-        withCredentials: true
-        
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      console.log({ email, password });
 
-      const access_token = response.data.access_token;
-      const refresh_token = response.data.refresh_token;
-      const user_email = response.data.email
-      console.log(access_token);
-      console.log(refresh_token);
-      console.log(user_email);
+      if (error || !data) {
+        return;
+      }
 
+      const res = await supabase
+        .from("users")
+        .select("id, email, role_id(*)")
+        .eq("id", data?.user?.id);
 
-      localStorage.setItem("access_token", `"${access_token}"`);
-      localStorage.setItem("refresh_token", `"${refresh_token}"`);
-      localStorage.setItem("user_email", `"${user_email}"`);
+      if (error) return;
 
+      localStorage.setItem("phishing-token", JSON.stringify(data));
+      localStorage.setItem("phishing-user-data", JSON.stringify(res?.data[0]));
 
-      // setServerResponse("");
-      // setShow(false);
-
-      navigate("/dashboard");
+      if (res?.data[0]?.role_id?.role_name === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/u/dashboard");
+      }
     } catch (error) {
       console.log(error);
-    };
-
-
+    }
   };
 
   return (

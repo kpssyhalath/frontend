@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, redirect, useFetcher } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -21,55 +21,26 @@ import { supabase } from "../../utils/supabase/client";
 
 const { Header, Sider, Content } = Layout;
 
-const AdminRole = () => {
+const UserRole = () => {
   return [
     {
-      key: "/dashboard",
+      key: "/u/dashboard",
       icon: <DashboardOutlined />,
-      label: <NavLink to="/dashboard">Dashboard</NavLink>,
+      label: <NavLink to="/u/dashboard">Dashboard</NavLink>,
     },
     {
-      key: "/campaigns",
+      key: "/u/campaigns",
       icon: <BulbOutlined />,
-      label: <NavLink to="/campaigns">Campaigns</NavLink>,
-    },
-    {
-      key: "/user-and-group",
-      icon: <UsergroupAddOutlined />,
-      label: <NavLink to="/user-and-group">User & Group</NavLink>,
-    },
-    {
-      key: "/email-templates",
-      icon: <MailOutlined />,
-      label: <NavLink to="/email-templates">Email Templates</NavLink>,
-    },
-    {
-      key: "/landing-pages",
-      icon: <LaptopOutlined />,
-      label: <NavLink to="/landing-pages">Landing Pages</NavLink>,
-    },
-    {
-      key: "/sending-profiles",
-      icon: <SendOutlined />,
-      label: <NavLink to="/sending-profiles">Sending Profiles</NavLink>,
-    },
-    {
-      key: "/user-management",
-      icon: <SettingOutlined />,
-      label: <NavLink to="/user-management">User Management</NavLink>,
+      label: <NavLink to="/u/campaigns">Campaigns</NavLink>,
     },
   ];
 };
 
-export default function DashboardLayout({ children }) {
+export default function PublicLayout({ children }) {
   const navigate = useNavigate();
   const token = localStorage.getItem("phishing-token");
-  const userDataToken = localStorage.getItem("phishing-user-data");
-  const session = token ? JSON.parse(token) : null;
-  const user = userDataToken ? JSON.parse(userDataToken) : null;
-  const [isPending, setIsPending] = useState(
-    user && user.role_id.role_name === "admin" ? false : true
-  );
+  const user = token ? JSON.parse(token) : null;
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -78,13 +49,30 @@ export default function DashboardLayout({ children }) {
   }, [token, navigate]);
 
   useEffect(() => {
-    if (user && user.role_id.role_name === "user") {
-      navigate("/u/dashboard");
-    }
-    setTimeout(() => {
-      setIsPending(false);
-    }, [100]);
-  }, [user, navigate]);
+    const fetchUser = async () => {
+      if (!user.user.id) return;
+
+      const { data, error } = await supabase
+        .from("users")
+        .select("id, email, role_id(*)")
+        .eq("id", user.user.id);
+
+      if (error) return;
+
+      if (data[0]?.role_id?.role_name === "admin") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    };
+    fetchUser();
+  }, [user]);
+
+  // useEffect(() => {
+  //   if (!isAdmin) {
+  //     navigate("/u/dashboard");
+  //   }/s
+  // }, [isAdmin, navigate]);
 
   const handleProfileAllClick = () => {
     navigate("/user-management");
@@ -139,7 +127,7 @@ export default function DashboardLayout({ children }) {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={[pathname]}
-          items={isPending ? [] : AdminRole()}
+          items={UserRole()}
         />
       </Sider>
       <Layout>
